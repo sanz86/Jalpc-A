@@ -8235,3 +8235,9 @@ body.md-skin {
 .navbar .nav > li:hover .dropdown-menu {
   display: block;
 }
+
+p, div.alert , li
+{
+white-space: pre-wrap;
+word-wrap: break-word;
+}
