@@ -120,28 +120,9 @@ userModelCtrl.controller('resetpasswordCtrl', function ($scope, $rootScope, $htt
     $rootScope.gray_bg = true;
     $scope.submitForm = function(isValid) {
         if (isValid) {
-
-            var req1 = {
-                method: 'GET',
-                url: 'https://api.leancloud.cn/1.1/users/me',
-                headers: {
-                    'X-LC-Id': $rootScope.LeanCloudId,
-                    'X-LC-Key': $rootScope.LeanCloudKey,
-                    'X-LC-Session': $cookies.get('SessionToken')
-                }
-            };
-            $http(req1).then(function successCallback(resp){
-                $scope.$apply(function () {
-                    $scope.ObjId = resp.data.objectId;
-                })
-            }, function errorCallback(resp) {
-                $scope.return_error = true;
-                $scope.return_message = resp.data.error;
-            });
-
             var req = {
                 method: 'PUT',
-                url: 'https://api.leancloud.cn/1.1/users/' + $scope.ObjId + '/updatePassword',
+                url: 'https://api.leancloud.cn/1.1/users/' + $cookies.get('UserId') + '/updatePassword',
                 headers: {
                     'X-LC-Id': $rootScope.LeanCloudId,
                     'X-LC-Key': $rootScope.LeanCloudKey,
