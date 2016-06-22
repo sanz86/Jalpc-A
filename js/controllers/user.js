@@ -42,7 +42,7 @@ userModelCtrl.controller('loginCtrl', function ($scope, $rootScope, $http, $cook
                 $cookies.put('username', resp.data.username);
                 toastr.success('Welcome back! ' + resp.data.username, $rootScope.message_title);
                 window.setTimeout(function() {
-                    $state.go('index');
+                    $rootScope.back();
                 }, 2000);
             }, function errorCallback(resp) {
                 toastr.error(resp.data.error, $rootScope.message_title);
