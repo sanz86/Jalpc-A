@@ -84,24 +84,18 @@ angular.module('uiRouter', ['ui.router'])
 
 angular.module('uiRouter.blogs', ['ui.router', 'ngSanitize'])
 .config(function ($stateProvider, $urlRouterProvider) {
-    // $urlRouterProvider.otherwise('/');
     $stateProvider
         .state('blogs', {
-            // abstract: true,
+            abstract: true,
             url: '/blogs',
             templateUrl: 'tpls/blog/blog.html',
+            resolve: {
+                blogs: ['blogs',
+                    function (blogs) {
+                        return blogs.all();
+                    }]
+            },
             controller: 'blogsCtrl'
-            // resolve: {
-            //     blogs: ['blogs',
-            //         function (blogs) {
-            //             return blogs.all();
-            //         }]
-            // },
-            // controller:
-            //     function ($scope, $rootScope, blogs) {
-            //         $rootScope.landing_page = true;
-            //         $scope.blogs = blogs;
-            //     }
         })
         .state('blogs.add', {
             url: '/add',
@@ -117,5 +111,9 @@ angular.module('uiRouter.blogs', ['ui.router', 'ngSanitize'])
             url: '/edit/{blogId:[0-9a-z]{24}}',
             templateUrl: 'tpls/blog/blog_edit.html',
             controller: 'editblogCtrl'
+        })
+        .state('blogs.list', {
+            url: '',
+            templateUrl: 'tpls/blog/blog_list.html'
         })
 });

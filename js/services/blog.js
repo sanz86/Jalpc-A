@@ -11,6 +11,24 @@ blogModelService.factory('utils', function () {
                 if (a[i].objectId == id) return a[i];
             }
             return null;
+        },
+        deletebyId: function deletebyId(a, id) {
+            for (var i = 0; i < a.length; i++) {
+                if (a[i].objectId == id) {
+                    a.splice(i, 1);
+                    return a;
+                }
+            }
+            return null;
+        },
+        editbyId: function editbyId(a, id, obj) {
+            for (var i = 0; i < a.length; i++){
+                if (a[i].objectId == id) {
+                    a[i] = obj;
+                    return a;
+                }
+            }
+            return null;
         }
     };
 });
