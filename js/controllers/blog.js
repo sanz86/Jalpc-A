@@ -56,7 +56,6 @@ blogModelCtrl.controller('addblogCtrl', function ($scope, $rootScope, $http, $st
                 });
                 window.setTimeout(function() {
                     window.location.reload();
-                    // console.log($scope.blogs);
                     $state.go('blogs.detail', {'blogId': $scope.blog_objId});
                 }, 2000);
             }, function errorCallback(resp){
