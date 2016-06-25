@@ -33,7 +33,7 @@ blogModelService.factory('utils', function () {
     };
 });
 
-blogModelService.factory('blogs', function ($rootScope, $http, utils) {
+blogModelService.factory('blogs', function ($rootScope, $http) {
     var req = {
         method: 'GET',
         url: 'https://api.leancloud.cn/1.1/classes/Blog',
@@ -48,14 +48,10 @@ blogModelService.factory('blogs', function ($rootScope, $http, utils) {
         return resp.data.results;
     });
 
-    var factory = {};
-    factory.all = function () {
-        return blogs;
-    };
-    factory.get = function (id) {
-        return blogs.then(function(){
-            return utils.findById(blogs, id);
-        })
-    };
-    return factory;
+    return {
+        all: function all() {
+            if (blogs) return blogs;
+            return null;
+        }
+    }
 });

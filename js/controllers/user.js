@@ -38,7 +38,6 @@ userModelCtrl.controller('loginCtrl', function ($scope, $rootScope, $http, $cook
             };
             $http(req).then(function successCallback(resp){
                 $cookies.put('SessionToken', resp.data.sessionToken);
-                $cookies.put('UserId', resp.data.objectId);
                 $cookies.put('username', resp.data.username);
                 toastr.success('Welcome back! ' + resp.data.username, $rootScope.message_title);
                 window.setTimeout(function() {
@@ -113,36 +112,42 @@ userModelCtrl.controller('forgotpasswordCtrl', function ($scope, $rootScope, $co
     };
 });
 
-userModelCtrl.controller('resetpasswordCtrl', function ($scope, $rootScope, $http, $cookies, $state, toastr) {
+userModelCtrl.controller('resetpasswordCtrl', function ($scope, $rootScope, $http, $cookies, $state, toastr, user) {
     if (!$cookies.get('SessionToken')) {
         $rootScope.back();
     }
     $rootScope.gray_bg = true;
     $scope.submitForm = function(isValid) {
         if (isValid) {
-            var req = {
-                method: 'PUT',
-                url: 'https://api.leancloud.cn/1.1/users/' + $cookies.get('UserId') + '/updatePassword',
-                headers: {
-                    'X-LC-Id': $rootScope.LeanCloudId,
-                    'X-LC-Key': $rootScope.LeanCloudKey,
-                    'X-LC-Session': $cookies.get('SessionToken'),
-                    'Content-Type': 'application/json'
-                },
-                data: {
-                    'old_password': $scope.old_password,
-                    'new_password': $scope.new_password2
-                }
-            };
-            $http(req).then(function successCallback(){
-                toastr.success('Success! Please login again.', $rootScope.message_title);
-                $cookies.remove('SessionToken');
-                $cookies.remove('UserId');
-                $cookies.remove('username');
-                window.setTimeout(function() {
-                    $state.go('user.login');
-                }, 2000);
-            }, function errorCallback(resp){
+            user.UserInfo().then(function (resp) {
+                var req = {
+                    method: 'PUT',
+                    url: 'https://api.leancloud.cn/1.1/users/' + resp.data.objectId + '/updatePassword',
+                    headers: {
+                        'X-LC-Id': $rootScope.LeanCloudId,
+                        'X-LC-Key': $rootScope.LeanCloudKey,
+                        'X-LC-Session': $cookies.get('SessionToken'),
+                        'Content-Type': 'application/json'
+                    },
+                    data: {
+                        'old_password': $scope.old_password,
+                        'new_password': $scope.new_password2
+                    }
+                };
+                $http(req).then(function successCallback(){
+                    toastr.success('Success! Please login again.', $rootScope.message_title);
+                    $cookies.remove('SessionToken');
+                    $cookies.remove('username');
+                    window.setTimeout(function() {
+                        $state.go('user.login');
+                    }, 2000);
+                }, function errorCallback(resp){
+                    $scope.old_password = "";
+                    $scope.new_password1 = "";
+                    $scope.new_password2 = "";
+                    toastr.error(resp.data.error, $rootScope.message_title);
+                });
+            }, function (resp) {
                 toastr.error(resp.data.error, $rootScope.message_title);
             });
         }

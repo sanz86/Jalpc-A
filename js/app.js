@@ -7,6 +7,7 @@ var rootApp = angular.module('rootApp', [
     'indexModelCtrl',
     'userModelCtrl',
     'blogModelCtrl',
+    'userModelService',
     'blogModelService',
     'uiRouter',
     'uiRouter.blogs',
@@ -16,12 +17,12 @@ var rootApp = angular.module('rootApp', [
     'toastr',
 ])
 .run(function ($rootScope, $state, $stateParams, $anchorScroll) {
-    $rootScope.message_title = 'Celine Blog';
-    $rootScope.AdminId = '5764eff42e958a00581a6fd2';
-    $rootScope.$state = $state;
-    $rootScope.$stateParams = $stateParams;
     $rootScope.LeanCloudId = 'vAMFua5yim32gEb0BgyaUPtw-gzGzoHsz';
     $rootScope.LeanCloudKey = 'nsyfA4qrY3UQsOe7JP6xvUxo';
+    $rootScope.message_title = 'Celine Blog';
+    $rootScope.Admin = 'Celine';
+    $rootScope.$state = $state;
+    $rootScope.$stateParams = $stateParams;
     $rootScope.$on("$stateChangeSuccess",  function(event, toState, toParams, fromState, fromParams) {
         $rootScope.previousState_name = fromState.name;
         $rootScope.previousState_params = fromParams;
