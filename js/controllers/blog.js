@@ -4,97 +4,81 @@
 
 var blogModelCtrl = angular.module('blogModelCtrl', []);
 
-blogModelCtrl.controller('blogsCtrl', function ($scope, $rootScope, $cookies, $state, toastr, blogs, user) {
+blogModelCtrl.controller('blogsCtrl', function ($scope, $rootScope, $cookies, $timeout, $state, toastr, blogs, user) {
     user.UserInfo().then(function (resp) {
-        if ($cookies.get('username') == resp.data.username) {
-            $scope.username = $cookies.get('username');
-            if (resp.data.username == $rootScope.Admin) {
-                $scope.add = true;
-            }
-            else {
-                $scope.add = false;
-            }
-        } else {
-            $scope.username = false;
-        }
+        $scope.username = resp.data.username;
+    }).then(function () {
+        $scope.username == $rootScope.Admin ? $scope.add = true: $scope.add = false;
     });
     $rootScope.landing_page = true;
     $scope.blogs = blogs;
     $scope.logout = function () {
         $cookies.remove('SessionToken');
-        $cookies.remove('username');
         toastr.success('Success! You have logged out.', $rootScope.message_title);
-        $state.go('blogs.list');
-        window.location.reload();
+        $timeout(function () {
+            $state.go('blogs.list');
+            window.location.reload();
+        }, 2000);
     }
 
 });
 
-blogModelCtrl.controller('addblogCtrl', function ($scope, $rootScope, $http, $state, $cookies, toastr, user) {
+blogModelCtrl.controller('addblogCtrl', function ($scope, $rootScope, $http, $state, $timeout, $cookies, toastr, user) {
     user.UserInfo().then(function (resp) {
-        if  ($cookies.get('username') != resp.data.username ||
-             $cookies.get('username') != $rootScope.Admin ||
-             resp.data.username != $rootScope.Admin) {
-            $rootScope.back();
-        }
+        $scope.username = resp.data.username;
+        $scope.UserId = resp.data.objectId;
+    }).then(function () {
+        $scope.username != $rootScope.Admin || $rootScope.back();
     });
     $rootScope.landing_page = true;
     $scope.submitForm = function (isValid) {
         if (isValid) {
-            user.UserInfo().then(function (resp) {
-                var acl = {};
-                acl[resp.data.objectId] = {"read": true, "write": true};
-                acl["*"] = {"read": true};
-                var req = {
-                    method: 'POST',
-                    url: 'https://api.leancloud.cn/1.1/classes/Blog',
-                    headers: {
-                        'X-LC-Id': $rootScope.LeanCloudId,
-                        'X-LC-Key': $rootScope.LeanCloudKey,
-                        'Content-Type': 'application/json'
-                    },
-                    data: {
-                        'title': $scope.blog_title,
-                        'content': $scope.summernote_text,
-                        "ACL": acl
-                    }
-                };
-                $http(req).then(function successCallback(resp) {
-                    toastr.success('Success! You have added a blog.', $rootScope.message_title);
-                    $scope.blog_objId = resp.data.objectId;
-                    $scope.blogs.unshift({
-                        'title': $scope.blog_title,
-                        'content': $scope.summernote_text,
-                        'createdAt': resp.data.createdAt,
-                        'objectId': resp.data.objectId
-                    });
-                    window.setTimeout(function () {
-                        $state.go('blogs.detail', {'blogId': $scope.blog_objId});
-                    }, 2000);
-                }, function errorCallback(resp) {
-                    toastr.error(resp.data.error, $rootScope.message_title);
+            var acl = {};
+            acl[$scope.UserId] = {"read": true, "write": true};
+            acl["*"] = {"read": true};
+            var req = {
+                method: 'POST',
+                url: 'https://api.leancloud.cn/1.1/classes/Blog',
+                headers: {
+                    'X-LC-Id': $rootScope.LeanCloudId,
+                    'X-LC-Key': $rootScope.LeanCloudKey,
+                    'Content-Type': 'application/json'
+                },
+                data: {
+                    'title': $scope.blog_title,
+                    'content': $scope.summernote_text,
+                    "ACL": acl
+                }
+            };
+            $http(req).then(function successCallback(resp) {
+                toastr.success('Success! You have added a blog.', $rootScope.message_title);
+                $scope.blog_objId = resp.data.objectId;
+                $scope.blogs.unshift({
+                    'title': $scope.blog_title,
+                    'content': $scope.summernote_text,
+                    'createdAt': resp.data.createdAt,
+                    'objectId': resp.data.objectId
                 });
-            });
+                $timeout(function () {
+                    $state.go('blogs.detail', {'blogId': $scope.blog_objId});
+                }, 2000);
+            }, function errorCallback(resp) {
+                toastr.error(resp.data.error, $rootScope.message_title);
+            })
         }
     };
 });
 
-blogModelCtrl.controller('blogCtrl', function ($scope, $rootScope, $stateParams, $http, $state, $cookies, toastr, blogs, utils, user) {
+blogModelCtrl.controller('blogCtrl', function ($scope, $rootScope, $stateParams, $http, $state, $cookies, $timeout, toastr, blogs, utils, user) {
     $rootScope.landing_page = true;
     user.UserInfo().then(function (resp) {
-        if  ($cookies.get('username') != resp.data.username ||
-            $cookies.get('username') != $rootScope.Admin ||
-            resp.data.username != $rootScope.Admin) {
-            $scope.ctrl = false;
-        } else {
-            $scope.ctrl = true;
-        }
+        $scope.username = resp.data.username;
+    }).then(function () {
+        $scope.username == $rootScope.Admin ? $scope.ctrl = true: $scope.ctrl = false;
     });
     $scope.blog = utils.findById($scope.blogs, $stateParams.blogId);
     $scope.delete_blog = function (objectId) {
-        if ($cookies.get('username') !== $rootScope.Admin) {
-            $rootScope.back();
-        }
+        $scope.username != $rootScope.Admin && $rootScope.back();
         var req = {
             method: 'DELETE',
             url: 'https://api.leancloud.cn/1.1/classes/Blog/' + objectId,
@@ -108,7 +92,7 @@ blogModelCtrl.controller('blogCtrl', function ($scope, $rootScope, $stateParams,
         $http(req).then(function successCallback(){
             toastr.success('Success! The blog has been deleted.', $rootScope.message_title);
             $scope.blogs = utils.deletebyId($scope.blogs, objectId);
-            window.setTimeout(function() {
+            $timeout(function () {
                 $state.go('blogs.list');
             }, 2000);
         }, function errorCallback(resp) {
@@ -117,13 +101,11 @@ blogModelCtrl.controller('blogCtrl', function ($scope, $rootScope, $stateParams,
     }
 });
 
-blogModelCtrl.controller('editblogCtrl', function ($scope, $rootScope, $stateParams, $cookies, $http, $state, toastr, utils, user) {
+blogModelCtrl.controller('editblogCtrl', function ($scope, $rootScope, $stateParams, $cookies, $http, $state, $timeout, toastr, utils, user) {
     user.UserInfo().then(function (resp) {
-        if  ($cookies.get('username') != resp.data.username ||
-            $cookies.get('username') != $rootScope.Admin ||
-            resp.data.username != $rootScope.Admin) {
-            $rootScope.back();
-        }
+        $scope.username = resp.data.username;
+    }).then(function () {
+        $scope.username != $rootScope.Admin && $rootScope.back();
     });
     $rootScope.landing_page = true;
     $scope.blog = utils.findById($scope.blogs, $stateParams.blogId);
@@ -147,7 +129,7 @@ blogModelCtrl.controller('editblogCtrl', function ($scope, $rootScope, $statePar
             $http(req).then(function successCallback() {
                 toastr.success('Success! The blog has been updated.', $rootScope.message_title);
                 $scope.blogs = utils.editbyId($scope.blogs, blog_objectId, $scope.blog);
-                window.setTimeout(function () {
+                $timeout(function () {
                     $state.go('blogs.detail', {'blogId': blog_objectId});
                 }, 2000);
             }, function errorCallback(resp) {

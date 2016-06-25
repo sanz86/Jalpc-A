@@ -16,7 +16,7 @@ var userModelCtrl = angular.module('userModelCtrl', [
     'toastr'
 ]);
 
-userModelCtrl.controller('loginCtrl', function ($scope, $rootScope, $http, $cookies, $state, toastr) {
+userModelCtrl.controller('loginCtrl', function ($scope, $rootScope, $http, $cookies, $state, $timeout, toastr) {
     $cookies.get('SessionToken') && $rootScope.back();
     $rootScope.gray_bg = true;
     $scope.submitForm = function(isValid) {
@@ -36,9 +36,8 @@ userModelCtrl.controller('loginCtrl', function ($scope, $rootScope, $http, $cook
             };
             $http(req).then(function successCallback(resp){
                 $cookies.put('SessionToken', resp.data.sessionToken);
-                $cookies.put('username', resp.data.username);
                 toastr.success('Welcome back! ' + resp.data.username, $rootScope.message_title);
-                window.setTimeout(function() {
+                $timeout(function () {
                     $rootScope.back();
                 }, 2000);
             }, function errorCallback(resp) {
@@ -48,7 +47,7 @@ userModelCtrl.controller('loginCtrl', function ($scope, $rootScope, $http, $cook
     }
 });
 
-userModelCtrl.controller('registerCtrl', function ($scope, $rootScope, $http, $cookies, $state, toastr) {
+userModelCtrl.controller('registerCtrl', function ($scope, $rootScope, $http, $cookies, $state, $timeout, toastr) {
     $cookies.get('SessionToken') && $rootScope.back();
     $rootScope.gray_bg = true;
     $scope.submitForm = function(isValid) {
@@ -69,7 +68,7 @@ userModelCtrl.controller('registerCtrl', function ($scope, $rootScope, $http, $c
             };
             $http(req).then(function successCallback(){
                 toastr.success('Success! You have received a email, please confirm it.', $rootScope.message_title);
-                window.setTimeout(function() {
+                $timeout(function () {
                     $state.go('user.login');
                 }, 2000);
             }, function errorCallback(resp){
@@ -79,7 +78,7 @@ userModelCtrl.controller('registerCtrl', function ($scope, $rootScope, $http, $c
     };
 });
 
-userModelCtrl.controller('forgotpasswordCtrl', function ($scope, $rootScope, $cookies, $http, $state, toastr) {
+userModelCtrl.controller('forgotpasswordCtrl', function ($scope, $rootScope, $cookies, $http, $state, $timeout, toastr) {
     $cookies.get('SessionToken') && $rootScope.back();
     $rootScope.gray_bg = true;
     $scope.submitForm = function(isValid) {
@@ -96,7 +95,7 @@ userModelCtrl.controller('forgotpasswordCtrl', function ($scope, $rootScope, $co
             };
             $http(req).then(function successCallback(){
                 toastr.success('Success! You have received a email, please confirm it.', $rootScope.message_title);
-                window.setTimeout(function() {
+                $timeout(function () {
                     $state.go('user.login');
                 }, 2000);
             }, function errorCallback(resp){
@@ -106,12 +105,14 @@ userModelCtrl.controller('forgotpasswordCtrl', function ($scope, $rootScope, $co
     };
 });
 
-userModelCtrl.controller('resetpasswordCtrl', function ($scope, $rootScope, $http, $cookies, $state, toastr, user) {
+userModelCtrl.controller('resetpasswordCtrl', function ($scope, $rootScope, $http, $cookies, $state, $timeout, toastr, user) {
     $cookies.get('SessionToken') || $rootScope.back();
     $rootScope.gray_bg = true;
     $scope.submitForm = function(isValid) {
         if (isValid) {
             user.UserInfo().then(function (resp) {
+                $scope.username = resp.data.username;
+            }).then(function () {
                 var req = {
                     method: 'PUT',
                     url: 'https://api.leancloud.cn/1.1/users/' + resp.data.objectId + '/updatePassword',
@@ -129,8 +130,7 @@ userModelCtrl.controller('resetpasswordCtrl', function ($scope, $rootScope, $htt
                 $http(req).then(function successCallback(){
                     toastr.success('Success! Please login again.', $rootScope.message_title);
                     $cookies.remove('SessionToken');
-                    $cookies.remove('username');
-                    window.setTimeout(function() {
+                    $timeout(function () {
                         $state.go('user.login');
                     }, 2000);
                 }, function errorCallback(resp){
@@ -141,7 +141,7 @@ userModelCtrl.controller('resetpasswordCtrl', function ($scope, $rootScope, $htt
                 });
             }, function (resp) {
                 toastr.error(resp.data.error, $rootScope.message_title);
-            });
+            })
         }
     };
 });
