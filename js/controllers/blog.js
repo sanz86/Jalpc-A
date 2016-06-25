@@ -18,7 +18,7 @@ blogModelCtrl.controller('blogsCtrl', function ($scope, $rootScope, $cookies, $t
         $timeout(function () {
             $state.go('blogs.list');
             window.location.reload();
-        }, 2000);
+        }, 1500);
     }
 
 });
@@ -61,7 +61,7 @@ blogModelCtrl.controller('addblogCtrl', function ($scope, $rootScope, $http, $st
                 });
                 $timeout(function () {
                     $state.go('blogs.detail', {'blogId': $scope.blog_objId});
-                }, 2000);
+                }, 1500);
             }, function errorCallback(resp) {
                 toastr.error(resp.data.error, $rootScope.message_title);
             })
@@ -94,7 +94,7 @@ blogModelCtrl.controller('blogCtrl', function ($scope, $rootScope, $stateParams,
             $scope.blogs = utils.deletebyId($scope.blogs, objectId);
             $timeout(function () {
                 $state.go('blogs.list');
-            }, 2000);
+            }, 1500);
         }, function errorCallback(resp) {
             toastr.error(resp.data.error, $rootScope.message_title);
         });
@@ -131,7 +131,7 @@ blogModelCtrl.controller('editblogCtrl', function ($scope, $rootScope, $statePar
                 $scope.blogs = utils.editbyId($scope.blogs, blog_objectId, $scope.blog);
                 $timeout(function () {
                     $state.go('blogs.detail', {'blogId': blog_objectId});
-                }, 2000);
+                }, 1500);
             }, function errorCallback(resp) {
                 toastr.error(resp.data.error, $rootScope.message_title);
             });

@@ -16,7 +16,7 @@ var rootApp = angular.module('rootApp', [
     'ngCookies',
     'toastr',
 ])
-.run(function ($rootScope, $state, $stateParams, $anchorScroll) {
+.run(function ($rootScope, $state, $stateParams, $anchorScroll, $cookies) {
     $rootScope.LeanCloudId = 'vAMFua5yim32gEb0BgyaUPtw-gzGzoHsz';
     $rootScope.LeanCloudKey = 'nsyfA4qrY3UQsOe7JP6xvUxo';
     $rootScope.message_title = 'Celine Blog';
@@ -24,12 +24,12 @@ var rootApp = angular.module('rootApp', [
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
     $rootScope.$on("$stateChangeSuccess",  function(event, toState, toParams, fromState, fromParams) {
-        $rootScope.previousState_name = fromState.name;
-        $rootScope.previousState_params = fromParams;
+        fromState.name && $cookies.put('PreviousStateName', fromState.name);
+        fromParams.name && $cookies.put('PreviousParamsName', fromParams.name);
         $anchorScroll();
     });
     $rootScope.back = function() {
-        $state.go($rootScope.previousState_name,$rootScope.previousState_params);
+        $state.go($cookies.get('PreviousStateName'),$cookies.get('PreviousParamsName'));
     };
 })
 .config(['$interpolateProvider', function ($interpolateProvider) {

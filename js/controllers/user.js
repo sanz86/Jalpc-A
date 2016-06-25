@@ -39,7 +39,7 @@ userModelCtrl.controller('loginCtrl', function ($scope, $rootScope, $http, $cook
                 toastr.success('Welcome back! ' + resp.data.username, $rootScope.message_title);
                 $timeout(function () {
                     $rootScope.back();
-                }, 2000);
+                }, 1500);
             }, function errorCallback(resp) {
                 toastr.error(resp.data.error, $rootScope.message_title);
             });
@@ -70,7 +70,7 @@ userModelCtrl.controller('registerCtrl', function ($scope, $rootScope, $http, $c
                 toastr.success('Success! You have received a email, please confirm it.', $rootScope.message_title);
                 $timeout(function () {
                     $state.go('user.login');
-                }, 2000);
+                }, 1500);
             }, function errorCallback(resp){
                 toastr.error(resp.data.error, $rootScope.message_title);
             });
@@ -97,7 +97,7 @@ userModelCtrl.controller('forgotpasswordCtrl', function ($scope, $rootScope, $co
                 toastr.success('Success! You have received a email, please confirm it.', $rootScope.message_title);
                 $timeout(function () {
                     $state.go('user.login');
-                }, 2000);
+                }, 1500);
             }, function errorCallback(resp){
                 toastr.error(resp.data.error, $rootScope.message_title);
             });
@@ -132,7 +132,7 @@ userModelCtrl.controller('resetpasswordCtrl', function ($scope, $rootScope, $htt
                     $cookies.remove('SessionToken');
                     $timeout(function () {
                         $state.go('user.login');
-                    }, 2000);
+                    }, 1500);
                 }, function errorCallback(resp){
                     $scope.old_password = "";
                     $scope.new_password1 = "";
