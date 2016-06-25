@@ -23,6 +23,7 @@ blogModelCtrl.controller('blogsCtrl', function ($scope, $rootScope, $cookies, bl
     $scope.logout = function () {
         $cookies.remove('SessionToken');
         $cookies.remove('username');
+        window.location.reload();
     }
 
 });
