@@ -17,9 +17,7 @@ var userModelCtrl = angular.module('userModelCtrl', [
 ]);
 
 userModelCtrl.controller('loginCtrl', function ($scope, $rootScope, $http, $cookies, $state, toastr) {
-    if ($cookies.get('SessionToken')) {
-        $rootScope.back();
-    }
+    $cookies.get('SessionToken') && $rootScope.back();
     $rootScope.gray_bg = true;
     $scope.submitForm = function(isValid) {
         if (isValid) {
@@ -51,9 +49,7 @@ userModelCtrl.controller('loginCtrl', function ($scope, $rootScope, $http, $cook
 });
 
 userModelCtrl.controller('registerCtrl', function ($scope, $rootScope, $http, $cookies, $state, toastr) {
-    if ($cookies.get('SessionToken')) {
-        $rootScope.back();
-    }
+    $cookies.get('SessionToken') && $rootScope.back();
     $rootScope.gray_bg = true;
     $scope.submitForm = function(isValid) {
         if (isValid) {
@@ -84,9 +80,7 @@ userModelCtrl.controller('registerCtrl', function ($scope, $rootScope, $http, $c
 });
 
 userModelCtrl.controller('forgotpasswordCtrl', function ($scope, $rootScope, $cookies, $http, $state, toastr) {
-    if ($cookies.get('SessionToken')) {
-        $rootScope.back();
-    }
+    $cookies.get('SessionToken') && $rootScope.back();
     $rootScope.gray_bg = true;
     $scope.submitForm = function(isValid) {
         if (isValid) {
@@ -113,9 +107,7 @@ userModelCtrl.controller('forgotpasswordCtrl', function ($scope, $rootScope, $co
 });
 
 userModelCtrl.controller('resetpasswordCtrl', function ($scope, $rootScope, $http, $cookies, $state, toastr, user) {
-    if (!$cookies.get('SessionToken')) {
-        $rootScope.back();
-    }
+    $cookies.get('SessionToken') || $rootScope.back();
     $rootScope.gray_bg = true;
     $scope.submitForm = function(isValid) {
         if (isValid) {

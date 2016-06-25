@@ -114,7 +114,7 @@ blogModelCtrl.controller('blogCtrl', function ($scope, $rootScope, $stateParams,
     }
 });
 
-blogModelCtrl.controller('editblogCtrl', function ($scope, $rootScope, $stateParams, $cookies, $http, $state, toastr, utils) {
+blogModelCtrl.controller('editblogCtrl', function ($scope, $rootScope, $stateParams, $cookies, $http, $state, toastr, utils, user) {
     user.UserInfo().then(function (resp) {
         if  ($cookies.get('username') != resp.data.username ||
             $cookies.get('username') != $rootScope.Admin ||
