@@ -83,7 +83,7 @@ angular.module('uiRouter', ['ui.router'])
         })
 });
 
-angular.module('uiRouter.blogs', ['ui.router', 'ngSanitize'])
+angular.module('uiRouter.blogs', ['ui.router', 'ngSanitize', 'toastr'])
 .config(function ($stateProvider, $urlRouterProvider) {
     $stateProvider
         .state('blogs', {

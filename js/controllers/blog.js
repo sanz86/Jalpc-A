@@ -4,7 +4,7 @@
 
 var blogModelCtrl = angular.module('blogModelCtrl', []);
 
-blogModelCtrl.controller('blogsCtrl', function ($scope, $rootScope, $cookies, blogs, user) {
+blogModelCtrl.controller('blogsCtrl', function ($scope, $rootScope, $cookies, $state, toastr, blogs, user) {
     user.UserInfo().then(function (resp) {
         if ($cookies.get('username') == resp.data.username) {
             $scope.username = $cookies.get('username');
@@ -23,6 +23,8 @@ blogModelCtrl.controller('blogsCtrl', function ($scope, $rootScope, $cookies, bl
     $scope.logout = function () {
         $cookies.remove('SessionToken');
         $cookies.remove('username');
+        toastr.success('Success! You have logged out.', $rootScope.message_title);
+        $state.go('blogs.list');
         window.location.reload();
     }
 
