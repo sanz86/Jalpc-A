@@ -32,10 +32,10 @@ var rootApp = angular.module('rootApp', [
         $state.go($cookies.get('PreviousStateName'),$cookies.get('PreviousParamsName'));
     };
 })
-.config(['$interpolateProvider', function ($interpolateProvider) {
+.config(function ($interpolateProvider) {
     $interpolateProvider.startSymbol('{$');
     $interpolateProvider.endSymbol('$}');
-}]);
+});
 
 rootApp.controller('rootCtrl', function ($rootScope) {
     $rootScope.landing_page = false;
@@ -91,10 +91,9 @@ angular.module('uiRouter.blogs', ['ui.router', 'ngSanitize', 'toastr'])
             url: '/blogs',
             templateUrl: 'tpls/blog/blog.html',
             resolve: {
-                blogs: ['blogs',
-                    function (blogs) {
+                blogs: function (blogs) {
                         return blogs.all();
-                    }]
+                    }
             },
             controller: 'blogsCtrl'
         })

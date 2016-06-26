@@ -30,9 +30,10 @@
                         <p ng-show="registerForm.password.$error.maxlength" class="help-block">Password is too long.</p>
                     </div>
                 </div>
-                <!--<div class="form-group">-->
-                <!--<div class="checkbox i-checks"><label> <input type="checkbox" required=""><i></i> Agree the policy </label></div>-->
-                <!--</div>-->
+                <div class="checkbox" ng-class="{ 'has-error' : registerForm.agree.$invalid && !registerForm.agree.$pristine && registerForm.agree.$dirty}">
+                    <input type="checkbox" ng-model="agree" required>
+                    <label>Agree the terms and policy</label>
+                </div>
                 <button type="submit" class="btn btn-info block full-width m-b" ng-disabled="registerForm.$invalid">Register</button>
             </form>
             <p class="text-muted text-center"><small>Already have an account?</small></p>

@@ -28,7 +28,7 @@ blogModelCtrl.controller('addblogCtrl', function ($scope, $rootScope, $http, $st
         $scope.username = resp.data.username;
         $scope.UserId = resp.data.objectId;
     }).then(function () {
-        $scope.username != $rootScope.Admin || $rootScope.back();
+        $scope.username != $rootScope.Admin && $rootScope.back();
     });
     $rootScope.landing_page = true;
     $scope.submitForm = function (isValid) {
