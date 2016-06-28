@@ -15,6 +15,7 @@ var rootApp = angular.module('rootApp', [
     'ui.router',
     'ngCookies',
     'toastr',
+    'monospaced.qrcode'
 ])
 .run(function ($rootScope, $state, $stateParams, $anchorScroll, $cookies) {
     $rootScope.LeanCloudId = 'vAMFua5yim32gEb0BgyaUPtw-gzGzoHsz';

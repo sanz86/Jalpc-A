@@ -77,6 +77,7 @@ blogModelCtrl.controller('blogCtrl', function ($scope, $rootScope, $stateParams,
         $scope.username == $rootScope.Admin ? $scope.ctrl = true: $scope.ctrl = false;
     });
     $scope.blog = utils.findById($scope.blogs, $stateParams.blogId);
+    $scope.blogUrl = 'https://jack614.github.io/#/blogs/' + $stateParams.blogId;
     $scope.delete_blog = function (objectId) {
         $scope.username != $rootScope.Admin && $rootScope.back();
         var req = {

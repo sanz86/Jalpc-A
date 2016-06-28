@@ -42,6 +42,10 @@ $ jekyll serve --watch
 
 Now you can navigate to localhost:4000 in your browser to see the site.
 
+### Npm
+
+You can use npm or other local web service to view the web site,remember to remove front matter in `website.html`.
+
 ### Using Github Pages
 
 You can host your Jekyll site for free with Github Pages. [Click here](https://pages.github.com) for more information.
@@ -50,9 +54,17 @@ A configuration tweak if you're using a gh-pages sub-folder
 
 Rename the repository to `<your githubname>.github.io` and create a branch named `gh-pages` then you will get a **https** website: `https://<your githubname>.github.io`.
 
-### Npm
+### Web analytics
 
-You can use npm or other local web service to view the web site,remember to remove front matter in `website.html`.
+I use [Google analytics](https://www.google.com/analytics/) to do web analytics, you can register an account and apply an application, just replace the javascript code in `website.html`.
+
+### Rich Text Editor
+
+I use [summernote](https://github.com/summernote/angular-summernote) to generate a rich text editor at web page,you can write many styles of words and add pictures, videos and so on.It's very easy to write an article.
+
+### Share
+
+Every blog, I generate a QRCode image with [angular-qrcode](https://github.com/monospaced/angular-qrcode),this is the absURL about the blog,you can get the blog in other devices and share.
 
 ### Safe
 
@@ -62,17 +74,12 @@ Since the project is **open source**, we must consider user's username and passw
 
 Client get the web application files(html,css,js),the push requrst to Leancloud, now both connect use https and Angularjs only save user's token on brower.
 
-### Rich Text Editor
-
-I use [summernote](https://github.com/summernote/angular-summernote) to generate a rich text editor at web page,you can write many styles of words and add pictures, videos and so on.It's very easy to write an article.
-
 ### To Do
 
 * comment
 * search page
 * pagination
-* web analysis
-* share
+* donate
 
 ### Put in a Jalpc-A Plug
 
@@ -109,6 +116,7 @@ There may be merge conflicts, so be sure to fix the files that git lists if they
 * [ui-router](https://github.com/angular-ui/ui-router)
 * [angular-toastr](https://github.com/Foxandxss/angular-toastr)
 * [angular-summernote](https://github.com/summernote/angular-summernote)
+* [angular-qrcode](https://github.com/monospaced/angular-qrcode)
 
 ## Contributing
 
