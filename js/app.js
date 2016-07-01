@@ -18,7 +18,7 @@ var rootApp = angular.module('rootApp', [
     'toastr',
     'monospaced.qrcode'
 ])
-.run(function ($rootScope, $state, $stateParams, $anchorScroll, $cookies) {
+.run(function ($rootScope, $state, $stateParams, $location, $anchorScroll, $cookies) {
     $rootScope.LeanCloudId = 'vAMFua5yim32gEb0BgyaUPtw-gzGzoHsz';
     $rootScope.LeanCloudKey = 'nsyfA4qrY3UQsOe7JP6xvUxo';
     $rootScope.message_title = 'Celine Blog';
@@ -28,6 +28,7 @@ var rootApp = angular.module('rootApp', [
     $rootScope.$on("$stateChangeSuccess",  function(event, to, toParams, from, fromParams) {
         from.name && $cookies.put('PreviousStateName', from.name);
         fromParams && $cookies.put('PreviousParamsName', JSON.stringify(fromParams));
+        $location.hash('top');
         $anchorScroll();
     });
     $rootScope.back = function() {
