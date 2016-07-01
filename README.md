@@ -54,6 +54,8 @@ A configuration tweak if you're using a gh-pages sub-folder
 
 Rename the repository to `<your githubname>.github.io` and create a branch named `gh-pages` then you will get a **https** website: `https://<your githubname>.github.io`.
 
+## Features
+
 ### Web analytics
 
 I use [Google analytics](https://www.google.com/analytics/) to do web analytics, you can register an account and apply an application, just replace the javascript code in `website.html`.
@@ -79,6 +81,8 @@ Since the project is **open source**, we must consider user's username and passw
 ![connect](connect.png)
 
 Client get the web application files(html,css,js),the push requrst to Leancloud, now both connect use https and Angularjs only save user's token on brower.
+
+##
 
 ### To Do
 
