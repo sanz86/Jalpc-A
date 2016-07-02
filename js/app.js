@@ -15,20 +15,23 @@ var rootApp = angular.module('rootApp', [
     'summernote',
     'ui.router',
     'ngCookies',
+    'ngResource',
     'toastr',
     'monospaced.qrcode'
 ])
 .run(function ($rootScope, $state, $stateParams, $location, $anchorScroll, $cookies) {
     $rootScope.LeanCloudId = 'vAMFua5yim32gEb0BgyaUPtw-gzGzoHsz';
     $rootScope.LeanCloudKey = 'nsyfA4qrY3UQsOe7JP6xvUxo';
+    $rootScope.domain = 'https://api.leancloud.cn/1.1';
     $rootScope.message_title = 'Celine Blog';
     $rootScope.Admin = 'Celine';
+    $rootScope.AdminId = '5764eff42e958a00581a6fd2';
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
     $rootScope.$on("$stateChangeSuccess",  function(event, to, toParams, from, fromParams) {
         from.name && $cookies.put('PreviousStateName', from.name);
         fromParams && $cookies.put('PreviousParamsName', JSON.stringify(fromParams));
-        $location.hash('top');
+        //$location.hash('top');
         $anchorScroll();
     });
     $rootScope.back = function() {
@@ -43,6 +46,12 @@ var rootApp = angular.module('rootApp', [
 rootApp.controller('rootCtrl', function ($rootScope) {
     $rootScope.landing_page = false;
     $rootScope.gray_bg = false;
+});
+
+rootApp.filter("sanitize", function($sce) {
+    return function(htmlCode){
+    return $sce.trustAsHtml(htmlCode);
+  }
 });
 
 angular.module('uiRouter', ['ui.router'])
